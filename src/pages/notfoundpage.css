@@ -1,0 +1,26 @@
+.notfound__page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+.notfound__page h2 {
+	font-family: 'BebasNeue';
+	font-size: 60px;
+	color: var(--font-color-main);
+	margin-bottom: 1rem;
+}
+
+.notfound__page p {
+	font-family: 'BebasNeue';
+	font-size: var(--font-size);
+	color: white;
+	max-width: 200px;
+	text-align: center;
+}
+
+.notfound__page img {
+	height: 300px;
+}
