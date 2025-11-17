@@ -1,4 +1,13 @@
+import React, { useMemo, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useBookingStore } from '../backend/store';
 import './bookform.css';
+
+interface ShoeInputProps {
+  index: number;
+  size: number;
+  onSizeChange: (index: number, size: number) => void;
+}
 
 function BookForm() {
   return (

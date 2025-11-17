@@ -33,14 +33,14 @@ function BurgerMenu() {
           className="menu-link" 
           onClick={() => handleNavigation('/bookingpage')}
         >
-          BOOKING
+          BOOK A LANE
         </button>
         
         <button 
           className="menu-link" 
           onClick={() => handleNavigation('/confirmationpage')}
         >
-          CONFIRMATION
+          YOUR BOOKINGS
         </button>
         
         

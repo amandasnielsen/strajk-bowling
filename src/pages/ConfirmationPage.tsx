@@ -13,7 +13,7 @@ function ConfirmationPage() {
       <Booking />
 
       <NavButton 
-				buttonText="SWEET, LET'S GO!" 
+				buttonText="SWEET, BOOK MORE!" 
 				path="/bookingpage" 
 			/>
     </section>
