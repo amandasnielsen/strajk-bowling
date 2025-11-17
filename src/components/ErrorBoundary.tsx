@@ -2,7 +2,6 @@ import { Component, type ErrorInfo, type ReactNode } from 'react'
 import ErrorPage from '../pages/ErrorPage'
 
 // 1. TYPER FÖR PROPS
-// ErrorBoundary behöver barnkomponenter (children)
 interface ErrorBoundaryProps {
   children: ReactNode;
 }
@@ -30,6 +29,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 
   public render() {
     if (this.state.hasError) {
+      // Skickar användaren till fel-sidan
       return <ErrorPage />; 
     }
 
@@ -37,4 +37,4 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   }
 }
 
-export default ErrorBoundary
+export default ErrorBoundary;

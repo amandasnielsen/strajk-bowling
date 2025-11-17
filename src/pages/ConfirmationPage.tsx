@@ -1,9 +1,24 @@
 import strajkBowlingLogo from '../assets/logo.svg';
 import NavButton from '../components/NavButton';
 import Booking from '../components/Booking';
+import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useBookingStore } from '../backend/store';
 import './confirmationpage.css';
 
 function ConfirmationPage() {
+	const confirmation = useBookingStore(state => state.confirmation);
+  const resetBooking = useBookingStore(state => state.resetBooking);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!confirmation) {
+      navigate('/');
+    }
+  }, [confirmation, navigate]);
+
+  if (!confirmation) return null;
+
   return (
     <section className="confirmation__page">
 
@@ -15,6 +30,7 @@ function ConfirmationPage() {
       <NavButton 
 				buttonText="SWEET, BOOK MORE!" 
 				path="/bookingpage" 
+				onClick={resetBooking}
 			/>
     </section>
   );

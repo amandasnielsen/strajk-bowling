@@ -1,7 +1,6 @@
-import strajkBowlingLogo from '../assets/logo.svg';
-import NavButton from '../components/NavButton';
-import BookForm from '../components/BookForm';
-import './bookingpage.css';
+import strajkBowlingLogo from '../assets/logo.svg'
+import BookForm from '../components/BookForm'
+import './bookingpage.css'
 
 function BookingPage() {
   return (
@@ -12,12 +11,8 @@ function BookingPage() {
 
       <BookForm />
 
-      <NavButton 
-				buttonText="STRIIIIIIKE!" 
-				path="/confirmationpage" 
-			/>
     </section>
   );
 }
 
-export default BookingPage;
+export default BookingPage

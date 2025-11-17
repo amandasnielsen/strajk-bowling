@@ -8,14 +8,15 @@ export const useBookingStore = create<BookingState>((set, get) => ({
   apiKey: null,
   date: new Date().toISOString().split('T')[0],
   time: '18:00',
-  people: 2,
+  people: 1,
   lanes: 1,
-  shoes: [42, 42],
+  shoes: [40],
 
   confirmation: null,
   isLoading: false,
   error: null,
 
+	setError: (message) => set({ error: message }),
   setApiKey: (key) => set({ apiKey: key }),
   setDraftDetail: (key, value) => set({ [key as keyof BookingState]: value }),
   setShoes: (shoes) => set({ shoes: shoes }),
@@ -43,58 +44,78 @@ export const useBookingStore = create<BookingState>((set, get) => ({
 
   // Action för att skicka Bokning till API
   startBooking: async (request: BookingRequest) => {
-    const { apiKey } = get();
-    if (!apiKey) {
-      set({ error: "API-nyckel saknas. Försök ladda om sidan.", isLoading: false });
-      return;
-    }
+		const { apiKey } = get();
 
-    set({ isLoading: true, error: null, confirmation: null });
-    
-    // Simulerar den instabila servern (1 av 5 misslyckas)
-    const shouldFail = Math.random() < 0.2; 
-    
-    try {
-      await new Promise(resolve => setTimeout(resolve, 500));
+		if (!apiKey) {
+			set({ error: "API-nyckel saknas. Ladda om sidan." });
+			return;
+		}
 
-      if (shouldFail) {
-          throw new Error("Tyvärr! Servern är instabil just nu, försök igen om en stund.");
-      }
+		set({ isLoading: true, error: null, confirmation: null });
 
-      const response = await fetch(BOOKING_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'x-api-key': apiKey,
-        },
-        body: JSON.stringify(request),
-      });
+		try {
+			const response = await fetch(BOOKING_ENDPOINT, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'x-api-key': apiKey,
+				},
+				body: JSON.stringify(request),
+			});
 
-      if (!response.ok) {
-        let errorMessage = 'Ett okänt serverfel inträffade.';
-        try {
-            const errorData = await response.json();
-            errorMessage = errorData.message || errorMessage;
-        } catch (e) {
-        }
-        throw new Error(`Bokningsfel: ${errorMessage}`);
-      }
+			// Logga ALLT från servern för felsökning
+			const raw = await response.clone().text();
+			console.log("🔎 SERVER STATUS:", response.status);
+			console.log("🔎 SERVER RAW RESPONSE:", raw);
 
-      const confirmationData: BookingResponse = await response.json();
-      
-      // Validera att ID och Price finns (krav på response-modellen)
-      if (!confirmationData.id || typeof confirmationData.price !== 'number') {
-          throw new Error("Ogiltigt svar från servern. Saknar boknings-ID eller pris.");
-      }
+			// Om inte OK → behandla serverfel
+			if (!response.ok) {
+				let serverMessage = "Ett okänt serverfel inträffade.";
 
-      set({ confirmation: confirmationData, isLoading: false, error: null });
+				try {
+					const errJson = JSON.parse(raw);
+					if (errJson?.message) serverMessage = errJson.message;
+				} catch (_) {
+					// Om API:et inte returnerar JSON, behåll default
+				}
 
-    } catch (err) {
-      console.error("Booking Error:", err);
-      set({ error: (err as Error).message || "Ett oväntat fel inträffade vid bokning.", isLoading: false });
-      
-      // Kasta felet igen för att React Router/Error Boundary kan hantera det
-      throw err;
-    }
-  },
+				throw new Error(serverMessage);
+			}
+
+			// Annars: lyckad bokning
+			const rawJson = await response.json();
+
+			const data = rawJson.bookingDetails;
+
+			if (!data || !data.bookingId) {
+				throw new Error("Servern returnerade ett felaktigt bokningsformat.");
+			}
+
+			const confirmationData: BookingResponse = {
+				when: data.when,
+				lanes: data.lanes,
+				people: data.people,
+				shoes: data.shoes,
+				price: data.price,
+				id: data.bookingId,
+				active: data.active,
+			};
+
+			set({
+				confirmation: confirmationData,
+				isLoading: false,
+				error: null
+			});
+
+		} catch (err) {
+			console.error("❌ Booking Error:", err);
+
+			set({
+				error: (err as Error).message || "Kunde inte genomföra bokningen.",
+				isLoading: false
+			});
+
+			throw err;
+		}
+	}
 }));
