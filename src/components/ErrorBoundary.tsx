@@ -1,30 +1,40 @@
-import { Component } from 'react';
-import ErrorPage from '../pages/ErrorPage';
+import { Component, type ErrorInfo, type ReactNode } from 'react'
+import ErrorPage from '../pages/ErrorPage'
 
-// Creates a class-component that works as an errorboundary
-// With state that keeps track if an error occurs
-class ErrorBoundary extends Component {
-  state = {
+// 1. TYPER FÖR PROPS
+// ErrorBoundary behöver barnkomponenter (children)
+interface ErrorBoundaryProps {
+  children: ReactNode;
+}
+
+// 2. TYPER FÖR STATE
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
+// 3. DEFINIERA KLASSEN MED KORREKTA TYPER
+class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  public state: ErrorBoundaryState = {
     hasError: false
   };
 
-  // Updates state if an error occurs
-  static getDerivedStateFromError(error) {
+  // Uppdaterar state om ett fel inträffar
+  public static getDerivedStateFromError(_: Error): ErrorBoundaryState {
     return { hasError: true };
   }
 
-  // Catches the error
-  componentDidCatch(error, info) {
-    console.error("Error caught by ErrorBoundary:", error);
+  // Fångar felet och loggar det
+  public componentDidCatch(error: Error, errorInfo: ErrorInfo) {
+    console.error("Error caught by ErrorBoundary:", error, errorInfo);
   }
 
-  render() {
+  public render() {
     if (this.state.hasError) {
-      return <ErrorPage />; // If an error, show ErrorPage
+      return <ErrorPage />; 
     }
 
-    return this.props.children; // If no error, show content
+    return this.props.children; 
   }
 }
 
-export default ErrorBoundary;
+export default ErrorBoundary
