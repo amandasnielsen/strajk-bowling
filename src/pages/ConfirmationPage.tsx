@@ -6,7 +6,7 @@ import './confirmationpage.css';
 
 const NoBookingsMessage = () => (
     <div className="no__booking-message">
-        <h2 className="message__text">You have no active bookings.</h2>
+        <h2 className="message__text">You have no bookings.</h2>
 				<br />
         <p className="message__text">Start by booking your first game!</p>
     </div>

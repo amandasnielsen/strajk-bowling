@@ -1,7 +1,8 @@
-import React, { useMemo, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useBookingStore } from '../backend/store'; 
-import './bookform.css'; 
+import React, { useMemo, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useBookingStore } from '../backend/store'
+import TimeSelect from './TimeSelect'
+import './bookform.css';
 
 interface ShoeInputProps {
   index: number;
@@ -22,7 +23,7 @@ const ShoeInput: React.FC<ShoeInputProps> = ({ index, size, onSizeChange }) => {
         max="50"
         value={size}
         onChange={(e) => onSizeChange(index, parseInt(e.target.value) || 0)}
-        placeholder="EU 40"
+        placeholder="38"
         className="form__input form__input--shoe"
       />
     </div>
@@ -69,7 +70,7 @@ function BookForm() {
     // Befintlig kapacitetsregel
     const isLaneCapacityValid = people <= lanes * 4;
     
-    const isShoeCountValid = people === shoes.length && shoes.every(s => s >= 30 && s <= 50);
+    const isShoeCountValid = people === shoes.length && shoes.every(s => s >= 20 && s <= 50);
 
     let validationMessage = '';
     
@@ -92,7 +93,7 @@ function BookForm() {
       let newShoes = [...shoes];
       if (people > shoes.length) {
         const diff = people - shoes.length;
-        for (let i = 0; i < diff; i++) newShoes.push(40);
+        for (let i = 0; i < diff; i++) newShoes.push(38);
       } else if (people < shoes.length) {
         newShoes = newShoes.slice(0, people);
       }
@@ -145,16 +146,10 @@ function BookForm() {
 				</div>
 				<div className="form__two-input">
 					<label htmlFor="time">TIME</label>
-					<select 
-						id="time" 
-						value={time} 
-						onChange={(e) => setDraftDetail('time', e.target.value)} 
-						className="form__input"
-					>
-						{['17:00', '18:00', '19:00', '20:00', '21:00'].map(t => (
-							<option key={t} value={t}>{t}</option>
-						))}
-					</select>
+					<TimeSelect
+						value={time}
+						onChange={(t) => setDraftDetail('time', t)}
+					/>
 				</div>
 			</div>
 

@@ -15,7 +15,6 @@ import './index.css';
 function App() {
   const fetchApiKey = useBookingStore(state => state.fetchApiKey);
   const apiKey = useBookingStore(state => state.apiKey);
-  //const isLoading = useBookingStore(state => state.isLoading);
   const error = useBookingStore(state => state.error);
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import type { BookingResponse } from '../backend/types'
 import './booking.css'
 
 interface BookingProps {
-  bookings: BookingResponse[]; // Tar emot en array av bokningar
+  bookings: BookingResponse[];
 }
 
 // Helper component
@@ -16,23 +16,23 @@ const DetailRow: React.FC<{ label: string, value: string | number, isHighlight?:
 
 function Booking({ bookings }: BookingProps) {
 
-  const renderBookingDetails = (confirmation: BookingResponse, index: number) => {
+  const renderBookingDetails = (confirmation: BookingResponse) => {
 
       const datePart = confirmation.when.substring(0, 10);
       const timePart = confirmation.when.substring(11, 16);
-			const shortBookingId = confirmation.id.substring(0, 8).toUpperCase();
+      const shortBookingId = confirmation.id.substring(0, 8).toUpperCase();
 
       return (
         <div key={confirmation.id} className="booking__item">
           <h3 className="booking__item-title">
-            {bookings.length > 1 ? `Booking ${index + 1}` : 'Details'}
+            BOOKING DETAILS
           </h3>
           <div className="details__group">
             <DetailRow label="WHEN" value={`${datePart} kl ${timePart}`} />
             <DetailRow label="WHO" value={`${confirmation.people} player/s`} />
             <DetailRow label="LANES" value={`${confirmation.lanes} lane/s`} />
             <DetailRow label="BOOKING NR" value={shortBookingId} isHighlight={true} />
-						<div className="total__summary">
+            <div className="total__summary">
             <p className="total__text">
               Price: <span>{confirmation.price} kr</span>
             </p>
@@ -52,7 +52,8 @@ function Booking({ bookings }: BookingProps) {
       )}
 
       <div>
-        {bookings.map((booking, index) => renderBookingDetails(booking, index))}
+        {/* Modifierad: Ignorerar 'index' genom att bara skicka 'booking' */}
+        {bookings.map((booking) => renderBookingDetails(booking))}
       </div>
 
     </section>
