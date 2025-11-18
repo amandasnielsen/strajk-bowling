@@ -7,9 +7,14 @@
   margin-bottom: 20px;
 }
 
-.scrollable__content {
-	flex: 1; 
+.book__form {
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
 	overflow-y: auto;
+	scrollbar-width: none;
 }
 
 .form__group {
@@ -17,33 +22,26 @@
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
-  max-width: 350px;
-  margin-bottom: 1rem;
+  max-width: 340px;
+  margin: 0 auto 1rem; 
 }
 
 .form__two {
-	display: flex;
+  display: flex;
   justify-content: space-between;
   gap: .5rem;
-	flex-direction: row;
+  flex-direction: row;
 }
 
 .form__two-input {
-	width: 45%; 
+  width: 45%; 
   display: flex;
   flex-direction: column;
+  position: relative;
+  z-index: 10;
 }
 
-.form__two label {
-	width: 100%;
-}
-
-.form__two .form__input {
-	width: 100%;
-  margin-bottom: 0;
-}
-
-.form__group label {
+label {
   font-family: 'WorkSans';
   font-size: 12px;
   color: var(--purple-color);
@@ -63,36 +61,114 @@
 }
 
 .shoe__size-group {
-	width: 100%;
-	max-width: 350px;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto; 
 }
 
 .shoe__input-field {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 1rem;
-}
-
-.shoe__input-field label {
-  font-family: 'WorkSans';
-  font-size: 12px;
-  color: var(--purple-color);
-  margin-bottom: 5px;
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
 }
 
 .price__summary {
-	width: 340px;
-	padding: 20px 20px 20px;
-	border: 2px solid var(--font-color-main);
-	position: absolute;
-	bottom: 8rem;
+  width: 100%;
+  max-width: 350px;
+  padding: 20px;
+  border: 2px solid var(--font-color-main);
+  margin: 1rem auto 0;
+  box-sizing: border-box;
 }
 
 .price__text {
+  color: var(--font-color-main);
+  font-family: 'BebasNeue';
+  font-size: var(--font-size);
+  letter-spacing: .1rem;
+  text-align: center;
+}
+
+.button__wrapper {
+	width: 100%;
+	max-width: 340px;
+	margin: 1rem auto 3rem; 
+	display: flex;
+	justify-content: center;
+}
+
+.button__nav {
+  position: static; 
+  width: 100%;
+}
+
+.validation__error {
+  width: 100%;
+  max-width: 340px;
+  margin: 0.5rem auto 1.5rem;
+  padding: 10px 15px;
+  background-color: var(--purple-color);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.validation__message {
+  font-family: 'WorkSans';
+  font-size: 14px;
+  color: rgb(0, 0, 0);
+  margin: 0;
+}
+
+.modal__backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.modal__content {
+	background-color: var(--background-color);
 	color: var(--font-color-main);
-	font-family: 'BebasNeue';
-	font-size: var(--font-size);
-	letter-spacing: .1rem;
+	padding: 30px;
+	border-radius: 8px;
+	max-width: 90%;
+	width: 350px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 	text-align: center;
+}
+
+.modal__title {
+	font-family: 'BebasNeue';
+	font-size: 28px;
+	color: var(--font-color-main);
+	margin-bottom: 1rem;
+}
+
+.modal__message {
+	font-family: 'WorkSans';
+	font-size: 16px;
+	margin-bottom: 2rem;
+}
+
+.modal__actions {
+	display: flex;
+	justify-content: space-around;
+	gap: 10px;
+}
+
+.modal__button--retry {
+	background-color: var(--font-color-main);
+	color: white;
+	font-family: 'BebasNeue';
+	padding: 10px 15px;
+	border: none;
+	font-size: 16px;
+	border-radius: 4px;
+	width: 200px;
 }

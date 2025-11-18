@@ -26,14 +26,13 @@ function App() {
 
   if (!apiKey) {
     return (
-        <div className="status-screen">
-            <h1 className="main-title">STRAJK BOWLING</h1>
-            <div className="loading-box">
-                <p className="status-message">Loading..</p>
-                <div className="spinner"></div>
-                {error && <p className="error-message">{error}</p>}
-            </div>
-        </div>
+			<div className="status__screen">
+				<div className="loading__box">
+						<p className="status__message">Loading..</p>
+						<div className="spinner"></div>
+						{error && <p className="error-message">{error}</p>}
+				</div>
+			</div>
     );
   }
 

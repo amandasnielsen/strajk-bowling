@@ -21,3 +21,28 @@
   letter-spacing: 0.1em;
 	margin-bottom: 1rem;
 }
+
+.scrollable__content {
+	flex-grow: 1; 
+	overflow-y: auto; 
+	width: 340px;
+}
+
+.no__booking-message {
+	text-align: center;
+	padding: 40px 20px;
+	border: 2px solid var(--purple-color);
+	border-radius: 8px;
+	margin-top: 5rem;
+}
+
+.message__text {
+	font-family: 'WorkSans';
+	color: var(--font-color-main);
+}
+
+.button__nav {
+	width: 340px;
+	position: static;
+	margin-bottom: 2rem;
+}

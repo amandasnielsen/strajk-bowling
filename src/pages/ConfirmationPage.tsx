@@ -1,39 +1,47 @@
+import NavButton from '../components/NavButton'; 
+import Booking from '../components/Booking'; 
+import { useBookingStore } from '../backend/store'; 
 import strajkBowlingLogo from '../assets/logo.svg';
-import NavButton from '../components/NavButton';
-import Booking from '../components/Booking';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useBookingStore } from '../backend/store';
 import './confirmationpage.css';
 
+const NoBookingsMessage = () => (
+    <div className="no__booking-message">
+        <h2 className="message__text">You have no active bookings.</h2>
+				<br />
+        <p className="message__text">Start by booking your first game!</p>
+    </div>
+);
+
+
 function ConfirmationPage() {
-	const confirmation = useBookingStore(state => state.confirmation);
-  const resetBooking = useBookingStore(state => state.resetBooking);
-  const navigate = useNavigate();
+  const { bookings, resetBooking } = useBookingStore();
 
-  useEffect(() => {
-    if (!confirmation) {
-      navigate('/');
-    }
-  }, [confirmation, navigate]);
-
-  if (!confirmation) return null;
+  const content = bookings.length === 0 ? (
+      <NoBookingsMessage />
+    ) : (
+      <Booking bookings={bookings} />
+    );
 
   return (
     <section className="confirmation__page">
 
       <img className="logo__confirmation" src={strajkBowlingLogo} alt="Strajk Bowling Logo" />
-      <h1 className="confirmation__title">SEE YOU SOON!</h1>
-
-      <Booking />
+      
+      <h1 className="confirmation__title">
+        SEE YOU SOON!
+      </h1>
+			
+      <div className="scrollable__content"> 
+        {content}
+      </div>
 
       <NavButton 
-				buttonText="SWEET, BOOK MORE!" 
-				path="/bookingpage" 
-				onClick={resetBooking}
-			/>
+        buttonText="SWEET, BOOK MORE!" 
+        path="/bookingpage" 
+        onClick={resetBooking} 
+      />
     </section>
   );
 }
 
-export default ConfirmationPage
+export default ConfirmationPage;

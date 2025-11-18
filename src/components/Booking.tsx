@@ -1,51 +1,62 @@
 import React from 'react'
-import { useBookingStore } from '../backend/store'
+import type { BookingResponse } from '../backend/types'
 import './booking.css'
+
+interface BookingProps {
+  bookings: BookingResponse[]; // Tar emot en array av bokningar
+}
 
 // Helper component
 const DetailRow: React.FC<{ label: string, value: string | number, isHighlight?: boolean }> = ({ label, value, isHighlight = false }) => (
-	<div className={`detail-row ${isHighlight ? 'detail-row--highlight' : ''}`}>
-		<span className="detail-label">{label}</span>
-		<span className="detail-value">{value}</span>
-	</div>
+  <div className={`detail__row ${isHighlight ? 'detail__row-highlight' : ''}`}>
+    <span className="detail__label">{label}</span>
+    <span className="detail__value">{value}</span>
+  </div>
 );
 
-// Booking Component (Visar bekräftelsedetaljer)
-function Booking() {
-	const confirmation = useBookingStore(state => state.confirmation);
+function Booking({ bookings }: BookingProps) {
 
-	if (!confirmation) {
-		return (
-			<div className="no-booking-message">
-				<p className="message-text">Ingen bokning hittades. Vänligen boka en bana först.</p>
-			</div>
-		);
-	}
-	
-	// Formatera datum och tid för presentation
-	const datePart = confirmation.when.substring(0, 10);
-	const timePart = confirmation.when.substring(11, 16);
+  const renderBookingDetails = (confirmation: BookingResponse, index: number) => {
 
-	return (
-		<section className="booking">
+      const datePart = confirmation.when.substring(0, 10);
+      const timePart = confirmation.when.substring(11, 16);
+			const shortBookingId = confirmation.id.substring(0, 8).toUpperCase();
 
-			<h2 className="section__title">BOOKING DETAILS</h2>
-			
-			<div className="details-group">
-				<DetailRow label="WHEN" value={`${datePart} kl ${timePart}`} />
-				<DetailRow label="WHO" value={`${confirmation.people} spelare`} />
-				<DetailRow label="LANES" value={`${confirmation.lanes} bana`} />
-				<DetailRow label="BOOKING NUMBER" value={confirmation.id} isHighlight={true} />
-			</div>
+      return (
+        <div key={confirmation.id} className="booking__item">
+          <h3 className="booking__item-title">
+            {bookings.length > 1 ? `Booking ${index + 1}` : 'Details'}
+          </h3>
+          <div className="details__group">
+            <DetailRow label="WHEN" value={`${datePart} kl ${timePart}`} />
+            <DetailRow label="WHO" value={`${confirmation.people} player/s`} />
+            <DetailRow label="LANES" value={`${confirmation.lanes} lane/s`} />
+            <DetailRow label="BOOKING NR" value={shortBookingId} isHighlight={true} />
+						<div className="total__summary">
+            <p className="total__text">
+              Price: <span>{confirmation.price} kr</span>
+            </p>
+          </div>
+          </div>
+        </div>
+      );
+  };
 
-			<div className="total-summary">
-				<p className="total-text">
-					Price: <span className="total-price">{confirmation.price} kr</span>
-				</p>
-			</div>
+  return (
+    <section>
+        
+      {bookings.length > 1 && (
+        <div>
+          <h2 className="bookings__title">TOTAL BOOKINGS: {bookings.length}</h2>
+        </div>
+      )}
 
-		</section>
-	);
+      <div>
+        {bookings.map((booking, index) => renderBookingDetails(booking, index))}
+      </div>
+
+    </section>
+  );
 }
 
-export default Booking
+export default Booking;

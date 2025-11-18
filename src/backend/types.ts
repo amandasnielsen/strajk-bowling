@@ -26,7 +26,7 @@ export interface BookingState {
   shoes: number[];
 
   // Status/Bekräftelse
-  confirmation: BookingResponse | null;
+  bookings: BookingResponse[]; 
   isLoading: boolean;
   error: string | null;
 
