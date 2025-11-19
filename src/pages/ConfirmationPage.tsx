@@ -36,7 +36,7 @@ function ConfirmationPage() {
       </div>
 
       <NavButton 
-        buttonText="SWEET, BOOK MORE!" 
+        buttonText="SWEET, LET'S GO!" 
         path="/bookingpage" 
         onClick={resetBooking} 
       />

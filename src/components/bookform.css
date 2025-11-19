@@ -43,7 +43,7 @@ label {
   font-family: 'WorkSans';
   font-size: 12px;
   color: var(--purple-color);
-  margin-bottom: 5px;
+  margin-bottom: .3rem;
   width: 100%;
 }
 

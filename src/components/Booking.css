@@ -22,7 +22,7 @@
 
 .booking__item-title {
 	font-family: 'BebasNeue';
-	color: var(--font-color-main);
+	color: var(--purple-color);
 	font-size: var(--font-size);
 	margin-bottom: 10px;
 	text-align: center;
@@ -31,26 +31,35 @@
 
 .details__group {
   margin-bottom: 1rem;
-  padding: 15px 15px;
-  border: 2px solid var(--purple-color);
-	border-radius: 10px;
 }
 
 .detail__row {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   padding: 8px 0;
   font-family: 'WorkSans';
   font-size: 16px;
-  color: var(--font-color-main);
 }
 
-.detail-label {
-  font-weight: 500;
+.detail__label {
+	font-family: 'WorkSans';
+  font-size: 12px;
+  color: var(--purple-color);
+  margin-bottom: .3rem;
+  width: 100%;
 }
 
-.detail-value {
-  font-weight: 700;
+.detail__value {
+  width: 340px;
+	background-color: white;
+	border-radius: 10px;
+	border: 2px solid var(--purple-color);
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-family: 'WorkSans';
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .total__summary {
@@ -66,13 +75,4 @@
   letter-spacing: .1rem;
   text-align: center;
   margin: 0;
-}
-
-.detail__row-highlight {
-	color: var(--purple-color);
-}
-
-.detail__row-highlight .detail__label,
-.detail__row-highlight .detail__value {
-  font-weight: 700;
 }

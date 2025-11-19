@@ -74,11 +74,11 @@ function BookForm() {
 
     let validationMessage = '';
     
-    if (!isPeopleValid) validationMessage = 'Number of players has to be at least 1.';
-    else if (!isLanesValid) validationMessage = 'Number of lanes has to be at least 1.';
-    else if (!isMinimumPeoplePerLaneValid) validationMessage = 'You need at least 1 player for each lane booked.'; 
-    else if (!isLaneCapacityValid) validationMessage = `Max ${lanes * 4} players allowed for ${lanes} lane/lanes.`;
-    else if (!isShoeCountValid) validationMessage = `Number of shoesizes (${shoes.length}) has to match the number of players (${people}) and valid sizes. (20-50).`;
+    if (!isPeopleValid) validationMessage = 'Number of players has to be at least 1';
+    else if (!isLanesValid) validationMessage = 'Number of lanes has to be at least 1';
+    else if (!isMinimumPeoplePerLaneValid) validationMessage = 'You need at least 1 player for each lane booked'; 
+    else if (!isLaneCapacityValid) validationMessage = `Max ${lanes * 4} players allowed for ${lanes} lane/lanes`;
+    else if (!isShoeCountValid) validationMessage = `Number of shoesizes (${shoes.length}) has to match the number of players (${people}) and valid sizes. (20-50)`;
 
     return {
       isValid: isPeopleValid && isLanesValid && isMinimumPeoplePerLaneValid && isLaneCapacityValid && isShoeCountValid,
