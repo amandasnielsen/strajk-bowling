@@ -24,9 +24,28 @@
 	font-family: 'BebasNeue';
 	color: var(--purple-color);
 	font-size: var(--font-size);
-	margin-bottom: 10px;
-	text-align: center;
 	letter-spacing: .1rem;
+	display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 340px;
+}
+
+.booking__item-title::before {
+  content: '';
+  flex-grow: 1;
+  height: .1rem;
+  background-color: var(--purple-color);
+  margin-right: .5rem;
+}
+
+.booking__item-title::after {
+  content: '';
+  flex-grow: 1;
+  height: .1rem;
+  background-color: var(--purple-color);
+  margin-left: .5rem;
 }
 
 .details__group {
@@ -64,8 +83,11 @@
 
 .total__summary {
   width: 100%;
-  max-width: 350px;
-  margin: 0 auto;
+  max-width: 340px;
+  padding: 15px 15px 15px;
+  border: 2px solid var(--font-color-main);
+  margin: 1rem auto 0;
+  box-sizing: border-box;
 }
 
 .total__text {
@@ -75,4 +97,6 @@
   letter-spacing: .1rem;
   text-align: center;
   margin: 0;
+	display: flex;
+	justify-content: space-between;
 }

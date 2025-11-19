@@ -145,11 +145,13 @@ function BookForm() {
 					/>
 				</div>
 				<div className="form__two-input">
-					<label htmlFor="time">TIME</label>
-					<TimeSelect
-						value={time}
-						onChange={(t) => setDraftDetail('time', t)}
-					/>
+					<label>
+						<span className="label__time">TIME</span>
+						<TimeSelect
+							value={time}
+							onChange={(t) => setDraftDetail('time', t)}
+						/>
+					</label>
 				</div>
 			</div>
 
@@ -208,7 +210,7 @@ function BookForm() {
       
 			<div className="price__summary">
 				<p className="price__text">
-					Pris: <span>{estimatedPrice} kr</span>
+					TOTAL: <span>{estimatedPrice} sek</span>
 				</p>
 			</div>
 

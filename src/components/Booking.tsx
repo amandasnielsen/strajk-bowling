@@ -34,7 +34,7 @@ function Booking({ bookings }: BookingProps) {
             <DetailRow label="BOOKING NR" value={shortBookingId} isHighlight={true} />
             <div className="total__summary">
             <p className="total__text">
-              Price: <span>{confirmation.price} kr</span>
+              Total: <span>{confirmation.price} sek</span>
             </p>
           </div>
           </div>
