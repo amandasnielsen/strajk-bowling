@@ -1,4 +1,4 @@
-### Strajk Bowling 🎳
+# Strajk Bowling 🎳
 
 - Individuell examination i Typescript + React
 - Amanda Strand Nielsen
