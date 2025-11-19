@@ -1,9 +1,10 @@
-import { create } from 'zustand';
-import type { BookingState, BookingRequest, BookingResponse } from './types'; 
+import { create } from 'zustand'
+import type { BookingState, BookingRequest, BookingResponse } from './types'
 
-const API_KEY_ENDPOINT = 'https://731xy9c2ak.execute-api.eu-north-1.amazonaws.com/key';
-const BOOKING_ENDPOINT = 'https://731xy9c2ak.execute-api.eu-north-1.amazonaws.com/booking';
+const API_KEY = 'https://731xy9c2ak.execute-api.eu-north-1.amazonaws.com/key'
+const API_BOOKING = 'https://731xy9c2ak.execute-api.eu-north-1.amazonaws.com/booking'
 
+// Zustand-store för boknings-logiken
 export const useBookingStore = create<BookingState>((set, get) => ({
   apiKey: null,
   date: new Date().toISOString().split('T')[0],
@@ -18,6 +19,7 @@ export const useBookingStore = create<BookingState>((set, get) => ({
 
   setError: (message) => set({ error: message }),
   setApiKey: (key) => set({ apiKey: key }),
+	// Uppdaterar ett enskilt fält
   setDraftDetail: (key, value) => set({ [key as keyof BookingState]: value }),
   setShoes: (shoes) => set({ shoes: shoes }),
 
@@ -31,11 +33,11 @@ export const useBookingStore = create<BookingState>((set, get) => ({
     error: null,
   }),
 
-  // Get API Key
+  // Hämtar API-nyckeln och felhantering för olika typer av fel
   fetchApiKey: async () => {
     set({ isLoading: true, error: null });
     try {
-      const response = await fetch(API_KEY_ENDPOINT);
+      const response = await fetch(API_KEY);
       if (!response.ok) throw new Error("Could not get API-key. Check network connection.");
       const data = await response.json();
       set({ apiKey: data.key, isLoading: false });
@@ -44,7 +46,8 @@ export const useBookingStore = create<BookingState>((set, get) => ({
     }
   },
 
-  // Action för att skicka Bokning till API
+  // Skickar bokningsförfrågan till API:et
+	// Kastar fel vid misslyckande som komponenten fångar upp
   startBooking: async (request: BookingRequest) => {
     const { apiKey } = get();
 
@@ -56,7 +59,7 @@ export const useBookingStore = create<BookingState>((set, get) => ({
     set({ isLoading: true, error: null }); 
 
     try {
-      const response = await fetch(BOOKING_ENDPOINT, {
+      const response = await fetch(API_BOOKING, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -65,11 +68,11 @@ export const useBookingStore = create<BookingState>((set, get) => ({
         body: JSON.stringify(request),
       });
 
-      // Logga från servern för felsökning
+      // Logga rådata från servern, för felsökning
       const raw = await response.clone().text();
-      console.log("🔎 SERVER STATUS:", response.status);
+      console.log("SERVER STATUS:", response.status);
 
-      // Om inte OK → behandla serverfel
+      // Om inte OK > behandla serverfel
       if (!response.ok) {
         let serverMessage = "Unknown server error occured.";
 
@@ -77,19 +80,19 @@ export const useBookingStore = create<BookingState>((set, get) => ({
           const errJson = JSON.parse(raw);
           if (errJson?.message) serverMessage = errJson.message;
         } catch (_) {
-          // Om API:et inte returnerar JSON, behåll default
+          // Ignorera parsingfel om servern inte returnerade JSON
         }
 
         throw new Error(serverMessage);
       }
 
       // Annars: lyckad bokning
-      const rawJson = await response.json();
+      const rawJson = JSON.parse(raw)
 
-      const data = rawJson.bookingDetails;
+      const data = rawJson.bookingDetails
 
       if (!data || !data.bookingId) {
-        throw new Error("Server returned faulty bookingformat.");
+        throw new Error("Server returned faulty bookingformat.")
       }
 
       const confirmationData: BookingResponse = {
@@ -102,19 +105,20 @@ export const useBookingStore = create<BookingState>((set, get) => ({
         active: data.active,
       };
 
-      // Lägger till den nya bokningen i bookings array
+      // Uppdaterar tillståndet med den nya bokningen
       set((state) => ({
         bookings: [...state.bookings, confirmationData],
         isLoading: false,
         error: null
-      }));
+      }))
 
       // Återställ formulärfälten efter lyckad bokning
-      get().resetBooking(); 
+      get().resetBooking()
 
     } catch (err) {
       console.error("Booking Error:", err);
 
+			// Sätter felmeddelandet i state för att visa modalen
       set({
         error: (err as Error).message || "Could not book.",
         isLoading: false

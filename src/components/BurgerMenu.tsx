@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import './burgermenu.css';
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import './burgermenu.css'
 
 function BurgerMenu() {
 
@@ -40,7 +40,7 @@ function BurgerMenu() {
           className="menu-link" 
           onClick={() => handleNavigation('/confirmationpage')}
         >
-          CONFIRMATIONS
+          CONFIRMATION
         </button>
         
         

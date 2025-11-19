@@ -3,17 +3,18 @@ import type { BookingResponse } from '../backend/types'
 import './booking.css'
 
 interface BookingProps {
-  bookings: BookingResponse[];
+  bookings: BookingResponse[]; // Tar emot en array av bokningar
 }
 
-// Helper component
-const DetailRow: React.FC<{ label: string, value: string | number, isHighlight?: boolean }> = ({ label, value, isHighlight = false }) => (
-  <div className={`detail__row ${isHighlight ? 'detail__row-highlight' : ''}`}>
+// Komponent för att visa varje detalj-rad för bokningen
+const DetailRow: React.FC<{ label: string, value: string | number }> = ({ label, value }) => (
+  <div className={`detail__row`}>
     <span className="detail__label">{label}</span>
     <span className="detail__value">{value}</span>
   </div>
 );
 
+// Visar alla detaljer för en eller flera bokningar
 function Booking({ bookings }: BookingProps) {
 
   const renderBookingDetails = (confirmation: BookingResponse) => {
@@ -31,10 +32,10 @@ function Booking({ bookings }: BookingProps) {
             <DetailRow label="WHEN" value={`${datePart} kl ${timePart}`} />
             <DetailRow label="WHO" value={`${confirmation.people} player/s`} />
             <DetailRow label="LANES" value={`${confirmation.lanes} lane/s`} />
-            <DetailRow label="BOOKING NR" value={shortBookingId} isHighlight={true} />
+            <DetailRow label="BOOKING NR" value={shortBookingId} />
             <div className="total__summary">
             <p className="total__text">
-              Total: <span>{confirmation.price} sek</span>
+              TOTAL: <span>{confirmation.price} SEK</span>
             </p>
           </div>
           </div>
@@ -45,14 +46,15 @@ function Booking({ bookings }: BookingProps) {
   return (
     <section>
         
+			{/* Visar totalt antal bokningar om det finns fler än en */}
       {bookings.length > 1 && (
         <div>
           <h2 className="bookings__title">TOTAL BOOKINGS: {bookings.length}</h2>
         </div>
       )}
 
+			{/* Loopar igenom och renderar detaljer för varje enskild bokning */}
       <div>
-        {/* Modifierad: Ignorerar 'index' genom att bara skicka 'booking' */}
         {bookings.map((booking) => renderBookingDetails(booking))}
       </div>
 

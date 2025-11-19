@@ -5,22 +5,30 @@ const TimeSelect: React.FC<{ value: string, onChange: (time: string) => void }> 
   const [isOpen, setIsOpen] = React.useState(false);
   const options = ['17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
 
-  // Använd en ref för att stänga modalen när man klickar utanför
   const dropdownRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    // Hanterar både MouseEvent och TouchEvent
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => { 
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
+    
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
   }, [dropdownRef]);
 
-  const handleSelect = (time: string) => {
+  const handleSelect = (event: React.MouseEvent<HTMLDivElement>, time: string) => {
+    event.stopPropagation(); 
+    
+    setIsOpen(false); 
     onChange(time);
-    setIsOpen(false);
   };
 
   return (
@@ -40,7 +48,7 @@ const TimeSelect: React.FC<{ value: string, onChange: (time: string) => void }> 
             <div 
               key={t} 
               className="custom-select__option" 
-              onClick={() => handleSelect(t)}
+              onClick={(e) => handleSelect(e, t)}
             >
               {t}
             </div>

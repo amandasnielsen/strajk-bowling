@@ -4,16 +4,18 @@ import { useBookingStore } from '../backend/store'
 import TimeSelect from './TimeSelect'
 import './bookform.css';
 
+// Typar shoe-input
 interface ShoeInputProps {
   index: number;
   size: number;
   onSizeChange: (index: number, size: number) => void;
 }
 
+// Återanvändbar komponent för att skriva in sko-storlek för varje person
 const ShoeInput: React.FC<ShoeInputProps> = ({ index, size, onSizeChange }) => {
   return (
     <div className="shoe__input-field">
-      <label htmlFor={`shoe-${index}`} className="shoe-label">
+      <label htmlFor={`shoe-${index}`}>
         SHOE SIZE / PERSON {index + 1}
       </label>
       <input
@@ -30,11 +32,13 @@ const ShoeInput: React.FC<ShoeInputProps> = ({ index, size, onSizeChange }) => {
   );
 };
 
+// Modal som visar API-felet som den instabila server-sidan gör
+// "Try again"-knappen stänger modalen och försöker boka igen direkt
 const ApiErrorModal: React.FC<{ message: string, onRetry: () => void, onClose: () => void }> = ({ message, onRetry, onClose }) => {
   
   const handleRetry = () => {
-    onClose();
-    onRetry();
+    onClose(); // Nollställer fel-state för att dölja modalen
+    onRetry(); // Anropar handeBooking igen
   };
     
   return (
@@ -53,23 +57,28 @@ const ApiErrorModal: React.FC<{ message: string, onRetry: () => void, onClose: (
   );
 };
 
+// Bokningsformuläret
 function BookForm() {
   const navigate = useNavigate();
+	// Hämta tillstånd och actions från min Zustand-store
   const { 
     date, time, people, lanes, shoes, error, isLoading, 
     setDraftDetail, setShoes, startBooking, setError 
   } = useBookingStore();
 
+	// Validerar formulärdata och visar eventuella felmeddelanden
+	// Körs om när people, lanes eller shoes ändras
   const validation = useMemo(() => {
     const isPeopleValid = people >= 1;
     const isLanesValid = lanes >= 1;
     
-    // NY VALIDERINGSREGEL: Måste vara minst 1 person per bana
+    // Måste vara minst 1 person per bana
     const isMinimumPeoplePerLaneValid = people >= lanes; 
-    
-    // Befintlig kapacitetsregel
+
+    // Max 4 spelare per bana
     const isLaneCapacityValid = people <= lanes * 4;
     
+		// Kontrollerar att antalet skor stämmer mer antalet folk och att storlekarna är mellan 20 och 50
     const isShoeCountValid = people === shoes.length && shoes.every(s => s >= 20 && s <= 50);
 
     let validationMessage = '';
@@ -88,6 +97,8 @@ function BookForm() {
 
   const estimatedPrice = people * 120 + lanes * 100;
 
+	// Synkar antalet sko-fält med antalet spelare
+	// Lägger till flera fält med desfault-storlek 38, eller tar bort fält
   useEffect(() => {
     if (people > 0 && people !== shoes.length) {
       let newShoes = [...shoes];
@@ -101,19 +112,21 @@ function BookForm() {
     }
   }, [people, shoes.length, setShoes, error, setError]);
 
+	// Uppdaterar en enskild storlek i sko-listan
   const handleShoeSizeChange = (index: number, size: number) => {
     const newShoes = [...shoes];
     newShoes[index] = size;
     setShoes(newShoes);
   };
 
+	// Hanterar bokning vid klick på knappen
   const handleBooking = async () => {
     if (!validation.isValid || isLoading) {
       setError(validation.message || "Please correct the form.");
       return;
     }
 
-    setError(null); 
+    setError(null); // Rensar eventuella gamla fel, innan nytt försök görs
 
     const bookingRequest = {
       when: `${date}T${time}:00`,
@@ -189,6 +202,7 @@ function BookForm() {
 				/>
 			</div>
 
+		 	{/* Visar eventuella valideringsfel */}
 			{!validation.isValid && validation.message && (
 					<div className="validation__error">
 							<p className="validation__message">{validation.message}</p>

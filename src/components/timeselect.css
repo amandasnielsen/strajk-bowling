@@ -1,19 +1,19 @@
 .custom-select {
-  position: relative;
+  position: relative; 
   width: 100%;
 }
 
 .custom-select__button {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	cursor: pointer;
-	padding-right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding-right: 10px; 
 }
 
 .custom-select__button .arrow {
-	font-size: 10px;
-	margin-left: 5px;
+  font-size: 10px;
+  margin-left: 5px;
 }
 
 .custom-select__options {
@@ -32,14 +32,9 @@
 }
 
 .custom-select__option {
-	padding: 10px 15px;
-	font-family: 'WorkSans';
-	font-size: 16px;
-	color: black;
-	text-align: left;
-}
-
-.custom-select__option:hover {
-	background-color: var(--purple-color);
-	color: white;
+  padding: 10px 15px;
+  font-family: 'WorkSans';
+  font-size: 16px;
+  color: black;
+  text-align: left;
 }
