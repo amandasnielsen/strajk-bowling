@@ -19,7 +19,7 @@ export const useBookingStore = create<BookingState>((set, get) => ({
 
   setError: (message) => set({ error: message }),
   setApiKey: (key) => set({ apiKey: key }),
-	// Uppdaterar ett enskilt fält
+  // Uppdaterar ett enskilt fält
   setDraftDetail: (key, value) => set({ [key as keyof BookingState]: value }),
   setShoes: (shoes) => set({ shoes: shoes }),
 
@@ -40,14 +40,19 @@ export const useBookingStore = create<BookingState>((set, get) => ({
       const response = await fetch(API_KEY);
       if (!response.ok) throw new Error("Could not get API-key. Check network connection.");
       const data = await response.json();
-      set({ apiKey: data.key, isLoading: false });
+      
+      // Nya nestlade formatet (data.data.key) eller det gamla formatet (data.key)
+      const key = data.data?.key || data.key; 
+      
+      if (!key) throw new Error("API key not found in response.");
+
+      set({ apiKey: key, isLoading: false });
     } catch (err) {
       set({ error: (err as Error).message || "Could not get API-key.", isLoading: false });
     }
   },
 
   // Skickar bokningsförfrågan till API:et
-	// Kastar fel vid misslyckande som komponenten fångar upp
   startBooking: async (request: BookingRequest) => {
     const { apiKey } = get();
 
@@ -88,21 +93,23 @@ export const useBookingStore = create<BookingState>((set, get) => ({
 
       // Annars: lyckad bokning
       const rawJson = JSON.parse(raw)
+      
+      // Väljer bookingDetails på det gamla sättet
+      // Annars det nya nestlade sättet
+      const bookingData = rawJson.bookingDetails || rawJson.data?.bookingDetails; 
 
-      const data = rawJson.bookingDetails
-
-      if (!data || !data.bookingId) {
-        throw new Error("Server returned faulty bookingformat.")
+      if (!bookingData || !bookingData.bookingId) {
+        throw new Error("Server returned faulty bookingformat. (Missing booking details or ID).")
       }
 
       const confirmationData: BookingResponse = {
-        when: data.when,
-        lanes: data.lanes,
-        people: data.people,
-        shoes: data.shoes,
-        price: data.price,
-        id: data.bookingId,
-        active: data.active,
+        when: bookingData.when,
+        lanes: bookingData.lanes,
+        people: bookingData.people,
+        shoes: bookingData.shoes,
+        price: bookingData.price,
+        id: bookingData.bookingId,
+        active: bookingData.active,
       };
 
       // Uppdaterar tillståndet med den nya bokningen
@@ -118,7 +125,7 @@ export const useBookingStore = create<BookingState>((set, get) => ({
     } catch (err) {
       console.error("Booking Error:", err);
 
-			// Sätter felmeddelandet i state för att visa modalen
+      // Sätter felmeddelandet i state för att visa modalen
       set({
         error: (err as Error).message || "Could not book.",
         isLoading: false
