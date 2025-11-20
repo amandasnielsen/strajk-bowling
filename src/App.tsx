@@ -9,6 +9,7 @@ import NotFoundPage from "./pages/NotFoundPage"
 import ConfirmationPage from './pages/ConfirmationPage'
 import BurgerMenu from './components/BurgerMenu'
 import ErrorPage from './pages/ErrorPage'
+import strajkBowlingLogo from './assets/logo.svg'
 
 import './index.css';
 
@@ -26,10 +27,10 @@ function App() {
   if (!apiKey) {
     return (
 			<div className="status__screen">
-				<div className="loading__box">
+				<div>
+						<img className="logo__error" src={strajkBowlingLogo} alt="strajk bowling logo" />
 						<p className="status__message">Loading..</p>
-						<div className="spinner"></div>
-						{error && <p className="error-message">{error}</p>}
+						{error && <p className="error__message">{error}</p>}
 				</div>
 			</div>
     );

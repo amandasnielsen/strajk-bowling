@@ -1,6 +1,6 @@
-import './landingpage.css';
-import strajkBowlingLogo from '../assets/logo.svg';
-import NavButton from '../components/NavButton';
+import './landingpage.css'
+import strajkBowlingLogo from '../assets/logo.svg'
+import NavButton from '../components/NavButton'
 
 function LandingPage() {
   return (

@@ -48,7 +48,7 @@ const ApiErrorModal: React.FC<{ message: string, onRetry: () => void, onClose: (
         <p className="modal__message">{message}</p>
         
         <div className="modal__actions">
-          <button onClick={handleRetry} className="modal__button--retry">
+          <button onClick={handleRetry} className="modal__button-retry">
             TRY AGAIN!
           </button>
         </div>

@@ -29,3 +29,29 @@ html {
 	font-weight: 400;
   src: url('./assets/fonts/work-sans.ttf');
 }
+
+.status__screen {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 4rem;
+}
+
+.logo__error {
+  height: 196px;
+  width: 136px;
+	margin-bottom: 2rem;
+}
+
+.status__message {
+	font-family: 'BebasNeue';
+	font-size: var(--font-size-title);
+	color: var(--font-color-main);
+	letter-spacing: .1rem;
+}
+
+.error__message {
+	font-family: 'WorkSans';
+	font-size: var(--font-size);
+	color: var(--purple-color);
+}

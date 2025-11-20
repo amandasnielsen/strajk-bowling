@@ -8,12 +8,6 @@
 	letter-spacing: .1rem;
 }
 
-.total-price-summary {
-	font-family: 'BebasNeue';
-	font-size: 24px;
-	color: var(--font-color-main);
-}
-
 .booking__item {
 	margin-bottom: 2rem;
 	padding: 10px 0;
