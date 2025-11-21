@@ -1,0 +1,26 @@
+.error__page {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	height: 100vh;
+}
+
+.error__page h2 {
+	font-family: 'BebasNeue';
+	font-size: 60px;
+	color: var(--font-color-main);
+	margin-bottom: 1rem;
+}
+
+.error__page p {
+	font-family: 'BebasNeue';
+	font-size: var(--font-size);
+	color: white;
+	max-width: 200px;
+	text-align: center;
+}
+
+.error__page img {
+	height: 300px;
+}

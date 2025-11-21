@@ -1,0 +1,96 @@
+.bookings__title {
+  font-family: 'BebasNeue';
+  color: var(--purple-color);
+  font-size: var(--font-size);
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 20px;
+	letter-spacing: .1rem;
+}
+
+.booking__item {
+	margin-bottom: 2rem;
+	padding: 10px 0;
+	width: 340px;
+}
+
+.booking__item-title {
+	font-family: 'BebasNeue';
+	color: var(--purple-color);
+	font-size: var(--font-size);
+	letter-spacing: .1rem;
+	display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 340px;
+}
+
+.booking__item-title::before {
+  content: '';
+  flex-grow: 1;
+  height: .1rem;
+  background-color: var(--purple-color);
+  margin-right: .5rem;
+}
+
+.booking__item-title::after {
+  content: '';
+  flex-grow: 1;
+  height: .1rem;
+  background-color: var(--purple-color);
+  margin-left: .5rem;
+}
+
+.details__group {
+  margin-bottom: 1rem;
+}
+
+.detail__row {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  font-family: 'WorkSans';
+  font-size: 16px;
+}
+
+.detail__label {
+	font-family: 'WorkSans';
+  font-size: 12px;
+  color: var(--purple-color);
+  margin-bottom: .3rem;
+  width: 100%;
+}
+
+.detail__value {
+  width: 340px;
+	background-color: white;
+	border-radius: 10px;
+	border: 2px solid var(--purple-color);
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-family: 'WorkSans';
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.total__summary {
+  width: 100%;
+  max-width: 340px;
+  padding: 15px 15px 15px;
+  border: 2px solid var(--font-color-main);
+  margin: 1rem auto 0;
+  box-sizing: border-box;
+}
+
+.total__text {
+  color: var(--font-color-main);
+  font-family: 'BebasNeue';
+  font-size: var(--font-size);
+  letter-spacing: .1rem;
+  text-align: center;
+  margin: 0;
+	display: flex;
+	justify-content: space-between;
+}

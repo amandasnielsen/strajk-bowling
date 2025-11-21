@@ -1,0 +1,255 @@
+import React, { useMemo, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useBookingStore } from '../backend/store'
+import TimeSelect from './TimeSelect'
+import './bookform.css';
+
+// Typar shoe-input
+interface ShoeInputProps {
+  index: number;
+  size: number;
+  onSizeChange: (index: number, size: number) => void;
+}
+
+// Återanvändbar komponent för att skriva in sko-storlek för varje person
+const ShoeInput: React.FC<ShoeInputProps> = ({ index, size, onSizeChange }) => {
+  return (
+    <div className="shoe__input-field">
+      <label htmlFor={`shoe-${index}`}>
+        SHOE SIZE / PERSON {index + 1}
+      </label>
+      <div className="input__prefix"> 
+        <span className="input__prefix-label">EU</span>
+        <input
+          type="number"
+          id={`shoe-${index}`}
+          min="20"
+          max="50"
+          value={size}
+          onChange={(e) => onSizeChange(index, parseInt(e.target.value) || 0)}
+          placeholder="38"
+          className="form__input form__input-shoe"
+        />
+      </div>
+    </div>
+  );
+};
+
+// Modal som visar API-felet som den instabila server-sidan gör
+// "Try again"-knappen stänger modalen och försöker boka igen direkt
+const ApiErrorModal: React.FC<{ message: string, onRetry: () => void, onClose: () => void }> = ({ message, onRetry, onClose }) => {
+  
+  const handleRetry = () => {
+    onClose(); // Nollställer fel-state för att dölja modalen
+    onRetry(); // Anropar handeBooking igen
+  };
+    
+  return (
+    <div className="modal__backdrop">
+      <div className="modal__content">
+        <h3 className="modal__title">BOOKINGERROR ☹️</h3>
+        <p className="modal__message">{message}</p>
+        
+        <div className="modal__actions">
+          <button onClick={handleRetry} className="modal__button-retry">
+            TRY AGAIN!
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Bokningsformuläret
+function BookForm() {
+  const navigate = useNavigate();
+	// Hämta tillstånd och actions från min Zustand-store
+  const { 
+    date, time, people, lanes, shoes, error, isLoading, 
+    setDraftDetail, setShoes, startBooking, setError 
+  } = useBookingStore();
+
+	// Validerar formulärdata och visar eventuella felmeddelanden
+	// Körs om när people, lanes eller shoes ändras
+  const validation = useMemo(() => {
+    const isPeopleValid = people >= 1;
+    const isLanesValid = lanes >= 1;
+    
+    // Måste vara minst 1 person per bana
+    const isMinimumPeoplePerLaneValid = people >= lanes; 
+
+    // Max 4 spelare per bana
+    const isLaneCapacityValid = people <= lanes * 4;
+    
+		// Kontrollerar att antalet skor stämmer mer antalet folk och att storlekarna är mellan 20 och 50
+    const isShoeCountValid = people === shoes.length && shoes.every(s => s >= 20 && s <= 50);
+
+    let validationMessage = '';
+    
+    if (!isPeopleValid) validationMessage = 'Number of players has to be at least 1';
+    else if (!isLanesValid) validationMessage = 'Number of lanes has to be at least 1';
+    else if (!isMinimumPeoplePerLaneValid) validationMessage = 'You need at least 1 player for each lane booked'; 
+    else if (!isLaneCapacityValid) validationMessage = `Max ${lanes * 4} players allowed for ${lanes} lane/lanes`;
+    else if (!isShoeCountValid) validationMessage = `Number of shoesizes (${shoes.length}) has to match the number of players (${people}) and valid sizes. (20-50)`;
+
+    return {
+      isValid: isPeopleValid && isLanesValid && isMinimumPeoplePerLaneValid && isLaneCapacityValid && isShoeCountValid,
+      message: validationMessage
+    };
+  }, [people, lanes, shoes]);
+
+  const estimatedPrice = people * 120 + lanes * 100;
+
+	// Synkar antalet sko-fält med antalet spelare
+	// Lägger till flera fält med desfault-storlek 38, eller tar bort fält
+  useEffect(() => {
+    if (people > 0 && people !== shoes.length) {
+      let newShoes = [...shoes];
+      if (people > shoes.length) {
+        const diff = people - shoes.length;
+        for (let i = 0; i < diff; i++) newShoes.push(38);
+      } else if (people < shoes.length) {
+        newShoes = newShoes.slice(0, people);
+      }
+      setShoes(newShoes);
+    }
+  }, [people, shoes.length, setShoes, error, setError]);
+
+	// Uppdaterar en enskild storlek i sko-listan
+  const handleShoeSizeChange = (index: number, size: number) => {
+    const newShoes = [...shoes];
+    newShoes[index] = size;
+    setShoes(newShoes);
+  };
+
+	// Hanterar bokning vid klick på knappen
+  const handleBooking = async () => {
+    if (!validation.isValid || isLoading) {
+      setError(validation.message || "Please correct the form.");
+      return;
+    }
+
+    setError(null); // Rensar eventuella gamla fel, innan nytt försök görs
+
+    const bookingRequest = {
+      when: `${date}T${time}:00`,
+      lanes: lanes,
+      people: people,
+      shoes: shoes,
+    };
+
+    try {
+      await startBooking(bookingRequest);
+      navigate('/confirmationpage');
+    } catch (e) {
+      // Felet hanteras i store.ts, stanna på sidan och visa felmeddelandet
+    }
+  };
+
+  return (
+    <section className="book__form">
+			<h2 className="section__title">WHEN, WHAT & WHO</h2>
+			<div className="form__group form__two">
+				<div className="form__two-input">
+					<label htmlFor="date">DATE</label>
+					<input 
+						type="date" 
+						id="date" 
+						value={date} 
+						onChange={(e) => setDraftDetail('date', e.target.value)} 
+						className="form__input" 
+					/>
+				</div>
+				<div className="form__two-input">
+					<label>
+						<span className="label__time">TIME</span>
+						<TimeSelect
+							value={time}
+							onChange={(t) => setDraftDetail('time', t)}
+						/>
+					</label>
+				</div>
+			</div>
+
+			<div className="form__group">
+				<label htmlFor="bowlers">NUMBER OF AWESOME BOWLERS</label>
+				<input 
+					type="number" 
+					id="bowlers" 
+					min="1" 
+					max="16"
+					value={people === 0 ? '' : people} 
+					onChange={(e) => {
+						const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+						setDraftDetail('people', val);
+					}} 
+					placeholder="..." 
+					className="form__input" 
+				/>
+			</div>
+
+			<div className="form__group">
+				<label htmlFor="lanes">NUMBER OF LANES</label>
+				<input 
+					type="number" 
+					id="lanes" 
+					min="1" 
+					max="4"
+					value={lanes === 0 ? '' : lanes} 
+					onChange={(e) => {
+						const val = e.target.value === '' ? 0 : parseInt(e.target.value);
+						setDraftDetail('lanes', val);
+					}} 
+					placeholder="..." 
+					className="form__input" 
+				/>
+			</div>
+
+		 	{/* Visar eventuella valideringsfel */}
+			{!validation.isValid && validation.message && (
+					<div className="validation__error">
+							<p className="validation__message">{validation.message}</p>
+					</div>
+			)}
+            
+			<h2 className="section__title">SHOES</h2>
+			
+			<div className="shoe__size-group">
+				{Array.from({ length: people }).map((_, index) => (
+					<ShoeInput
+						key={index}
+						index={index}
+						size={shoes[index] || 38}
+						onSizeChange={handleShoeSizeChange}
+					/>
+				))}
+			</div>
+      
+			<div className="price__summary">
+				<p className="price__text">
+					TOTAL: <span>{estimatedPrice} sek</span>
+				</p>
+			</div>
+
+			<div className="button__wrapper">
+        <button
+          onClick={handleBooking}
+          disabled={!validation.isValid || isLoading}
+          className={`button__nav ${(!validation.isValid || isLoading) ? 'button__nav--disabled' : ''}`}
+        >
+          {isLoading ? "SENDING..." : "STRIIIIIIKE!"}
+        </button>
+      </div>
+
+      {error && (
+        <ApiErrorModal
+          message={error}
+          onRetry={handleBooking}
+          onClose={() => setError(null)}
+        />
+      )}
+    </section>
+  );
+}
+
+export default BookForm;

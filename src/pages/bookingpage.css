@@ -1,0 +1,25 @@
+.booking__page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  box-sizing: border-box;
+  overflow: hidden; 
+}
+
+.logo__booking {
+  width: 76px;
+  height: auto;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  flex-shrink: 0; 
+}
+
+.booking__title {
+  font-family: 'BebasNeue';
+  color: var(--font-color-main);
+  font-size: var(--font-size-title);
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}

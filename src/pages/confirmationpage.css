@@ -1,0 +1,49 @@
+.confirmation__page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.logo__confirmation {
+  width: 76px;
+  height: auto;
+  margin-top: 2rem;
+	margin-bottom: 1rem;
+	flex-shrink: 0; 
+}
+
+.confirmation__title {
+  font-family: 'BebasNeue';
+  color: var(--font-color-main);
+  font-size: var(--font-size-title);
+  letter-spacing: 0.1em;
+	margin-bottom: 1rem;
+}
+
+.scrollable__content {
+	flex-grow: 1; 
+	overflow-y: auto; 
+	width: 340px;
+}
+
+.no__booking-message {
+	text-align: center;
+	padding: 40px 20px;
+	border: 2px solid var(--purple-color);
+	border-radius: 8px;
+	margin-top: 5rem;
+}
+
+.message__text {
+	font-family: 'WorkSans';
+	color: var(--font-color-main);
+}
+
+.button__nav {
+	width: 340px;
+	position: static;
+	margin-bottom: 2rem;
+}

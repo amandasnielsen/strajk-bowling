@@ -1,0 +1,227 @@
+.section__title {
+  font-family: 'BebasNeue';
+  color: var(--purple-color);
+  font-size: var(--font-size);
+  text-align: center;
+  margin-top: 1rem;
+  margin-bottom: 20px;
+	letter-spacing: .1rem;
+	display: flex;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 340px;
+}
+
+.section__title::before {
+  content: '';
+  flex-grow: 1;
+  height: .1rem;
+  background-color: var(--purple-color);
+  margin-right: .5rem;
+}
+
+.section__title::after {
+  content: '';
+  flex-grow: 1;
+  height: .1rem;
+  background-color: var(--purple-color);
+  margin-left: .5rem;
+}
+
+.book__form {
+  flex-grow: 1; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+	overflow-y: auto;
+	scrollbar-width: none;
+}
+
+.form__group {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto 1rem; 
+}
+
+.form__two {
+  display: flex;
+  justify-content: space-between;
+  gap: .5rem;
+  flex-direction: row;
+}
+
+.form__two-input {
+  width: 45%; 
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-family: 'WorkSans';
+  font-size: 12px;
+  color: var(--purple-color);
+  margin-bottom: .3rem;
+  width: 100%;
+	display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.label__time {
+	margin-bottom: .3rem;
+}
+
+.form__input {
+  background-color: white;
+  border: 2px solid var(--purple-color);
+  border-radius: 5px;
+  padding: 10px 15px;
+  font-size: 16px;
+  font-family: 'WorkSans';
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.shoe__size-group {
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto; 
+}
+
+.shoe__input-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.input__prefix {
+	display: flex;
+	align-items: center;
+	border: 2px solid var(--purple-color);
+	border-radius: 5px;
+	background-color: white;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.input__prefix-label {
+	padding: 10px 0 10px 15px;
+	font-family: 'WorkSans';
+	font-size: 16px;
+	color: #646464;
+	white-space: nowrap;
+}
+
+.form__input-shoe {
+	border: none !important; 
+	background: transparent; 
+	padding-left: .5rem; 
+	flex-grow: 1; 
+}
+
+.price__summary {
+  width: 100%;
+  max-width: 340px;
+  padding: 15px 15px 15px;
+  border: 2px solid var(--font-color-main);
+  margin: 1rem auto 0;
+  box-sizing: border-box;
+}
+
+.price__text {
+  color: var(--font-color-main);
+  font-family: 'BebasNeue';
+  font-size: var(--font-size);
+  letter-spacing: .1rem;
+  display: flex;
+	justify-content: space-between;
+}
+
+.button__wrapper {
+	width: 100%;
+	max-width: 340px;
+	margin: 1rem auto 3rem; 
+	display: flex;
+	justify-content: center;
+}
+
+.button__nav {
+  position: static; 
+  width: 100%;
+}
+
+.validation__error {
+  width: 100%;
+  max-width: 340px;
+  margin: 0.5rem auto 1.5rem;
+  padding: 10px 15px;
+  background-color: var(--purple-color);
+  border-radius: 5px;
+  text-align: center;
+}
+
+.validation__message {
+  font-family: 'WorkSans';
+  font-size: 14px;
+  color: rgb(0, 0, 0);
+  margin: 0;
+}
+
+.modal__backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.7);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	z-index: 1000;
+}
+
+.modal__content {
+	background-color: var(--background-color);
+	color: var(--font-color-main);
+	padding: 30px;
+	border-radius: 8px;
+	max-width: 90%;
+	width: 350px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+	text-align: center;
+}
+
+.modal__title {
+	font-family: 'BebasNeue';
+	font-size: 28px;
+	color: var(--font-color-main);
+	margin-bottom: 1rem;
+}
+
+.modal__message {
+	font-family: 'WorkSans';
+	font-size: 16px;
+	margin-bottom: 2rem;
+}
+
+.modal__actions {
+	display: flex;
+	justify-content: space-around;
+	gap: 10px;
+}
+
+.modal__button-retry {
+	background-color: var(--font-color-main);
+	color: white;
+	font-family: 'BebasNeue';
+	padding: 10px 15px;
+	border: none;
+	font-size: 16px;
+	border-radius: 4px;
+	width: 200px;
+}

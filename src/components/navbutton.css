@@ -1,0 +1,13 @@
+.button__nav {
+	background-color: var(--font-color-main);
+  color: white;
+  font-family: 'BebasNeue';
+  font-size: var(--font-size);
+  padding: 15px 15px 15px;
+  width: 340px;
+  letter-spacing: .1rem;
+  border: none;
+  outline: none;
+  border-radius: .2rem;
+  margin-top: 1rem;
+}

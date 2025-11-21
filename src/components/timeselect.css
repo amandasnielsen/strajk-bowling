@@ -1,0 +1,40 @@
+.custom-select {
+  position: relative; 
+  width: 100%;
+}
+
+.custom-select__button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  padding-right: 10px; 
+}
+
+.custom-select__button .arrow {
+  font-size: 10px;
+  margin-left: 5px;
+}
+
+.custom-select__options {
+	position: absolute; 
+	top: 100%;
+	left: 0;
+	right: 0;
+	z-index: 20;
+	background-color: white;
+	border: 2px solid var(--purple-color);
+	border-top: none;
+	border-radius: 0 0 5px 5px;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	max-height: 200px;
+	overflow-y: auto;
+}
+
+.custom-select__option {
+  padding: 10px 15px;
+  font-family: 'WorkSans';
+  font-size: 16px;
+  color: black;
+  text-align: left;
+}
