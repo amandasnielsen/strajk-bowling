@@ -18,16 +18,19 @@ const ShoeInput: React.FC<ShoeInputProps> = ({ index, size, onSizeChange }) => {
       <label htmlFor={`shoe-${index}`}>
         SHOE SIZE / PERSON {index + 1}
       </label>
-      <input
-        type="number"
-        id={`shoe-${index}`}
-        min="20"
-        max="50"
-        value={size}
-        onChange={(e) => onSizeChange(index, parseInt(e.target.value) || 0)}
-        placeholder="38"
-        className="form__input form__input--shoe"
-      />
+      <div className="input__prefix"> 
+        <span className="input__prefix-label">EU</span>
+        <input
+          type="number"
+          id={`shoe-${index}`}
+          min="20"
+          max="50"
+          value={size}
+          onChange={(e) => onSizeChange(index, parseInt(e.target.value) || 0)}
+          placeholder="38"
+          className="form__input form__input-shoe"
+        />
+      </div>
     </div>
   );
 };

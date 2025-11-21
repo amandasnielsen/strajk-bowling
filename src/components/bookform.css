@@ -99,6 +99,31 @@ label {
   margin-bottom: 1rem;
 }
 
+.input__prefix {
+	display: flex;
+	align-items: center;
+	border: 2px solid var(--purple-color);
+	border-radius: 5px;
+	background-color: white;
+	width: 100%;
+	box-sizing: border-box;
+}
+
+.input__prefix-label {
+	padding: 10px 0 10px 15px;
+	font-family: 'WorkSans';
+	font-size: 16px;
+	color: #646464;
+	white-space: nowrap;
+}
+
+.form__input-shoe {
+	border: none !important; 
+	background: transparent; 
+	padding-left: .5rem; 
+	flex-grow: 1; 
+}
+
 .price__summary {
   width: 100%;
   max-width: 340px;
